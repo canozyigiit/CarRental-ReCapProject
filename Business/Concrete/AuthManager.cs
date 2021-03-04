@@ -13,7 +13,7 @@ namespace Business.Concrete
 {
     public class AuthManager : IAuthService
     {
-        private IUserService _userService; //normalde manager larda kendi dal interface i enjekte edilir, farklı bir dal dan destek almak için service hizmeti(IXService) tanımlanmalıdır.
+        private IUserService _userService; 
         private ITokenHelper _tokenHelper;
 
         public AuthManager(IUserService userService, ITokenHelper tokenHelper)
@@ -23,7 +23,7 @@ namespace Business.Concrete
         }
 
 
-        public IDataResult<User> Register(UserForRegisterDto userForRegisterDto) // buradaki password userForregisterDto içerisinden de gelebilirdi.
+        public IDataResult<User> Register(UserForRegisterDto userForRegisterDto) 
         {
             byte[] passwordHash, passwordSalt;
             HashingHelper.CreatePasswordHash(userForRegisterDto.Password, out passwordHash, out passwordSalt);
@@ -46,7 +46,7 @@ namespace Business.Concrete
         public IDataResult<User> Login(UserForLoginDto userForLoginDto)
         {
             var userToCheck = _userService.GetByEmail(userForLoginDto.Email);
-            if (userToCheck == null)
+            if (userToCheck.Data == null)
             {
                 return new ErrorDataResult<User>(AspectMessages.UserNotFound);
             }
@@ -55,13 +55,12 @@ namespace Business.Concrete
             {
                 return new ErrorDataResult<User>(AspectMessages.PasswordError);
             }
-
-            return new SuccessDataResult<User>(AspectMessages.SuccessfulLogin);
+            return new SuccessDataResult<User>(userToCheck.Data, AspectMessages.SuccessfulLogin);
         }
 
         public IResult UserExists(string email)
         {
-            var result = _userService.GetByEmail(email); 
+            var result = _userService.GetByEmail(email);
             if (result.Data == null)
             {
                 return new SuccessResult();
@@ -78,4 +77,5 @@ namespace Business.Concrete
 
         }
     }
+
 }

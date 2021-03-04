@@ -11,7 +11,7 @@ namespace Business.ValidationRules.FluentValidation
             RuleFor(c => c.CompanyName).NotEmpty().WithMessage(AspectMessages.CanNotBeBlank);
             RuleFor(c => c.CompanyName).MinimumLength(2);
             
-            RuleFor(c => c.UserID).NotEmpty().WithMessage(AspectMessages.CanNotBeBlank);
+            RuleFor(c => c.UserId).NotEmpty().WithMessage(AspectMessages.CanNotBeBlank);
         }
     }
 }

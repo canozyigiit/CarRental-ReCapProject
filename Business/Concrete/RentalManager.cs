@@ -38,7 +38,7 @@ namespace Business.Concrete
 
         public IDataResult<Rental> GetById(int carId)
         {
-            return new SuccessDataResult<Rental>(_rentalDal.Get(r=> r.CarID == carId), Messages.Listed);
+            return new SuccessDataResult<Rental>(_rentalDal.Get(r=> r.CarId == carId), Messages.Listed);
         }
 
         [ValidationAspect(typeof(RentalValidator), Priority =1)]

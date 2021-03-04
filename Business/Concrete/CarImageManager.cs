@@ -33,7 +33,7 @@ namespace Business.Concrete
         {
             //return new SuccessDataResult<List<CarImage>>(_imageDal.GetAll(i => i.CarID == carId), Messages.Listed);
 
-            var result = _imageDal.GetAll(i => i.CarID == carId);
+            var result = _imageDal.GetAll(i => i.CarId == carId);
 
             if (result.Count > 0)
             {
@@ -41,14 +41,14 @@ namespace Business.Concrete
             }
 
             List<CarImage> images = new List<CarImage>();
-            images.Add(new CarImage() { CarID = 0, ImageID = 0, Date = DateTime.Now, ImagePath = "/images/car-rent.png" });
+            images.Add(new CarImage() { CarId = 0, ImageId = 0, Date = DateTime.Now, ImagePath = "/images/car-rent.png" });
 
             return new SuccessDataResult<List<CarImage>>(images);
         }
 
         public IDataResult<CarImage> GetById(int imageId)
         {
-            return new SuccessDataResult<CarImage>(_imageDal.Get(i => i.ImageID == imageId));
+            return new SuccessDataResult<CarImage>(_imageDal.Get(i => i.ImageId == imageId));
 
         }
 
@@ -68,7 +68,7 @@ namespace Business.Concrete
 
         public IResult Update(IFormFile file,CarImage carImage)
         {
-            var image = _imageDal.Get(c => c.ImageID == carImage.ImageID);
+            var image = _imageDal.Get(c => c.ImageId == carImage.ImageId);
             if (image == null)
             {
                 return new ErrorResult("Image not found.");
@@ -86,7 +86,7 @@ namespace Business.Concrete
 
         public IResult Delete(CarImage carImage)
         {
-            var image = _imageDal.Get(c => c.ImageID == carImage.ImageID);
+            var image = _imageDal.Get(c => c.ImageId == carImage.ImageId);
             if (image == null)
             {
                 return new ErrorResult("Image not found");
@@ -99,7 +99,7 @@ namespace Business.Concrete
 
         private IResult CheckIfImageCount(CarImage carImage)
         {
-            List<CarImage> gelAll = _imageDal.GetAll(i => i.CarID == carImage.CarID);
+            List<CarImage> gelAll = _imageDal.GetAll(i => i.CarId == carImage.CarId);
             var result = (gelAll.Count() >=5 );
             if (result)
             {

@@ -11,20 +11,20 @@ using System.Text;
 
 namespace DataAccess.Concrete.EntityFramework
 {
-    public class EfCarDal : EfEntityRepositoryBase<Car, CarRentalCompanyContext>, ICarDal
+    public class EfCarDal : EfEntityRepositoryBase<Car, RentACarContext>, ICarDal
     {
         public List<CarDetailDto> GetCarDetails()
         {
-            using (CarRentalCompanyContext context = new CarRentalCompanyContext())
+            using (RentACarContext context = new RentACarContext())
             {
                 var result = from c in context.Cars
                              join b in context.Brands
-                             on c.BrandID equals b.BrandID
+                             on c.BrandId equals b.BrandId
                              join co in context.Colors
-                             on c.ColorID equals co.ColorID
+                             on c.ColorId equals co.ColorId
                              select new CarDetailDto
                              {
-                                 CarID = c.CarID,
+                                 CarId = c.CarId,
                                  BrandName = b.BrandName,
                                  BrandModel = b.BrandModel,
                                  ColorName = co.ColorName,
@@ -38,9 +38,9 @@ namespace DataAccess.Concrete.EntityFramework
         
         public bool DeleteCarIfNotReturnDateNull(Car car)
         {
-            using (CarRentalCompanyContext context = new CarRentalCompanyContext())
+            using (RentACarContext context = new RentACarContext())
             {
-                var find = context.Rentals.Any(i => i.CarID == car.CarID && i.ReturnDate == null);
+                var find = context.Rentals.Any(i => i.CarId == car.CarId && i.ReturnDate == null);
                 if (!find)
                 {
                     context.Remove(car);

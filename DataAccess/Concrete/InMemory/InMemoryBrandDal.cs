@@ -16,11 +16,11 @@ namespace DataAccess.Concrete.InMemory
         {
             _brands = new List<Brand>
             {
-                new Brand{BrandID = 1, BrandName= "Citroen", BrandModel = "DS7 Crossback"},
-                new Brand{BrandID = 2, BrandName= "Jeep", BrandModel = "Renegade"},
-                new Brand{BrandID = 3, BrandName= "Mini Cooper", BrandModel = "Countryman"},
-                new Brand{BrandID = 4, BrandName= "Audi", BrandModel = "A3"},
-                new Brand{BrandID = 1, BrandName= "Mercedes", BrandModel = "CLA"}
+                new Brand{BrandId = 1, BrandName= "Citroen", BrandModel = "DS7 Crossback"},
+                new Brand{BrandId = 2, BrandName= "Jeep", BrandModel = "Renegade"},
+                new Brand{BrandId = 3, BrandName= "Mini Cooper", BrandModel = "Countryman"},
+                new Brand{BrandId = 4, BrandName= "Audi", BrandModel = "A3"},
+                new Brand{BrandId = 1, BrandName= "Mercedes", BrandModel = "CLA"}
             };
         }
         public void Add(Brand entity)
@@ -30,7 +30,7 @@ namespace DataAccess.Concrete.InMemory
 
         public void Delete(Brand entity)
         {
-            Brand colorToDelete = _brands.SingleOrDefault(b => b.BrandID == entity.BrandID);
+            Brand colorToDelete = _brands.SingleOrDefault(b => b.BrandId == entity.BrandId);
             _brands.Remove(colorToDelete);
         }
 
@@ -57,8 +57,8 @@ namespace DataAccess.Concrete.InMemory
 
         public void Update(Brand entity)
         {
-            Brand brandToUpdate = _brands.SingleOrDefault(b => b.BrandID == entity.BrandID);
-            brandToUpdate.BrandID = entity.BrandID;
+            Brand brandToUpdate = _brands.SingleOrDefault(b => b.BrandId == entity.BrandId);
+            brandToUpdate.BrandId = entity.BrandId;
             brandToUpdate.BrandName = entity.BrandName;
             brandToUpdate.BrandModel = entity.BrandModel;
         }

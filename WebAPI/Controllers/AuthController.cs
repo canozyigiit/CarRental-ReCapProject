@@ -38,10 +38,10 @@ namespace WebAPI.Controllers
         }
 
         [HttpPost("register")]
-        public IActionResult Register(UserForRegisterDto userForRegisterDto) // Buradaki passwrod userForRegisterDto içerisinden de gelebilirdi
+        public IActionResult Register(UserForRegisterDto userForRegisterDto) 
         {
-            var userExists = _authService.UserExists(userForRegisterDto.Email); // kontrol ettin mi alabiliyor muyum?
-            if (!userExists.SuccessStatus) // register talebim başarısız olduysa
+            var userExists = _authService.UserExists(userForRegisterDto.Email);
+            if (!userExists.SuccessStatus) 
             {
                 return BadRequest(userExists.Message);
             }

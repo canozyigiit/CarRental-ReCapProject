@@ -30,11 +30,10 @@ namespace Business.Concrete
 
         public IDataResult<Brand> GetById(int brandId)
         {
-            return new SuccessDataResult<Brand>(_brandDal.Get(b => b.BrandID == brandId), Messages.Listed);
+            return new SuccessDataResult<Brand>(_brandDal.Get(b => b.BrandId == brandId), Messages.Listed);
         }
 
         [ValidationAspect(typeof(BrandValidator), Priority = 1)]
-        [SecuredOperation("admin, product.add")]
         public IResult Add(Brand brand)
         {
             _brandDal.Add(brand);

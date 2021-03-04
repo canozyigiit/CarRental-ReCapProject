@@ -10,22 +10,22 @@ using Core.Entities.Concrete;
 
 namespace DataAccess.Concrete.EntityFramework
 {
-    public class EfUserDal : EfEntityRepositoryBase<User, CarRentalCompanyContext>, IUserDal
+    public class EfUserDal : EfEntityRepositoryBase<User, RentACarContext>, IUserDal
     {
         public List<CustomerRentalDetailDto> GetCustomerAndRentalDetails()
         {
-            using (CarRentalCompanyContext context = new CarRentalCompanyContext())
+            using (RentACarContext context = new RentACarContext())
             {
                 var result = from c in context.Customers
                     join r in context.Rentals
-                        on c.CustomerID equals r.CustomerID
+                        on c.CustomerId equals r.CustomerId
                         join u in context.Users
-                            on c.CustomerID equals  u.Id
+                            on c.CustomerId equals  u.Id
                     select new CustomerRentalDetailDto()
                     {
-                        RentalID = r.RentalID,
-                        UserID = u.Id,
-                        CustomerID = c.CustomerID,
+                        RentalId = r.RentalId,
+                        UserId = u.Id,
+                        CustomerId = c.CustomerId,
                         RentDate = r.RentDate,
                         ReturnDate = r.ReturnDate
 
@@ -37,9 +37,9 @@ namespace DataAccess.Concrete.EntityFramework
 
         public bool DeleteUserIfNotReturnDateNull(User user)
         {
-            using (CarRentalCompanyContext context = new CarRentalCompanyContext())
+            using (RentACarContext context = new RentACarContext())
             {
-                var find = GetCustomerAndRentalDetails().Any(i => i.UserID == user.Id && i.ReturnDate == null);
+                var find = GetCustomerAndRentalDetails().Any(i => i.UserId == user.Id && i.ReturnDate == null);
                 if (!find)
                 {
                     context.Remove(user);
@@ -53,21 +53,20 @@ namespace DataAccess.Concrete.EntityFramework
 
         public List<OperationClaim> GetClaims(User user)
         {
-            using (CarRentalCompanyContext context = new CarRentalCompanyContext())
+            using (var context = new RentACarContext())
             {
                 var result = from operationClaim in context.OperationClaims
                              join userOperationClaim in context.UserOperationClaims
                                  on operationClaim.Id equals userOperationClaim.OperationClaimId
                              where userOperationClaim.UserId == user.Id
-                             select new OperationClaim
-                             {
-                                 Id = userOperationClaim.OperationClaimId,
+                             select new OperationClaim 
+                             { 
+                                 Id = operationClaim.Id,
                                  Name = operationClaim.Name
                              };
-
                 return result.ToList();
-            }
 
+            }
         }
     }
 }

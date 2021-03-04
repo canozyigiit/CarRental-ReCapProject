@@ -10,11 +10,11 @@ namespace Business.ValidationRules.FluentValidation
         public CarValidator()
         {
             RuleFor(c => c.DailyPrice).NotEmpty().WithMessage(AspectMessages.CanNotBeBlank);
-            RuleFor(c => c.DailyPrice).GreaterThan(140);
+            RuleFor(c => c.DailyPrice).GreaterThan(90);
             
             
             RuleFor(c => c.Description).NotEmpty().WithMessage(AspectMessages.CanNotBeBlank);
-            RuleFor(c => c.Description).MinimumLength(10);
+            RuleFor(c => c.Description).MinimumLength(3);
             
             RuleFor(c => c.ModelYear).NotEmpty().WithMessage(AspectMessages.CanNotBeBlank);
             

@@ -11,22 +11,22 @@ using System.Text;
 
 namespace DataAccess.Concrete.EntityFramework
 {
-    public class EfBrandDal : EfEntityRepositoryBase<Brand, CarRentalCompanyContext> , IBrandDal
+    public class EfBrandDal : EfEntityRepositoryBase<Brand, RentACarContext> , IBrandDal
     {
         public List<CarBrandDetailDto> GetCarAndBrandDetails()
         {
-            using (CarRentalCompanyContext context = new CarRentalCompanyContext())
+            using (RentACarContext context = new RentACarContext())
             {
                 var result = from c in context.Cars
                              join b in context.Brands
-                             on c.BrandID equals b.BrandID
+                             on c.BrandId equals b.BrandId
                              join r in context.Rentals
-                             on c.CarID equals r.CarID
+                             on c.CarId equals r.CarId
                              select new CarBrandDetailDto
                              {
-                                 CarID = c.CarID,
-                                 BrandID = b.BrandID,
-                                 RentalID = r.RentalID,
+                                 CarId = c.CarId,
+                                 BrandId = b.BrandId,
+                                 RentalId = r.RentalId,
                                  RentDate = r.RentDate,
                                  ReturnDate = r.ReturnDate
                              };
@@ -38,9 +38,9 @@ namespace DataAccess.Concrete.EntityFramework
         
         public bool DeleteBrandIfNotReturnDateNull(Brand brand)
         {
-            using (CarRentalCompanyContext context = new CarRentalCompanyContext())
+            using (RentACarContext context = new RentACarContext())
             {
-                var find = GetCarAndBrandDetails().Any(i => i.BrandID == brand.BrandID && i.ReturnDate == null);
+                var find = GetCarAndBrandDetails().Any(i => i.BrandId == brand.BrandId && i.ReturnDate == null);
                 if (!find)
                 {
                     context.Remove(brand);

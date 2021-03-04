@@ -12,8 +12,8 @@ namespace Entities.Concrete
         {
                 Date = DateTime.Now;
         }
-        [Key] public int ImageID { get; set; }
-        public int CarID { get; set; }
+        [Key] public int ImageId { get; set; }
+        public int CarId { get; set; }
         public string ImagePath { get; set; }
 
         public DateTime Date { get; set; }

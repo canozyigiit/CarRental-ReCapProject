@@ -10,24 +10,24 @@ using System.Linq;
 
 namespace DataAccess.Concrete.EntityFramework
 {
-    public class EfRentalDal : EfEntityRepositoryBase<Rental, CarRentalCompanyContext>, IRentalDal
+    public class EfRentalDal : EfEntityRepositoryBase<Rental, RentACarContext>, IRentalDal
     {
         public List<RentalDetailDto> GetRentalDetails()
         {
-            using (CarRentalCompanyContext context = new CarRentalCompanyContext())
+            using (RentACarContext context = new RentACarContext())
             {
                 var result = from c in context.Cars
                              join r in context.Rentals
-                             on c.CarID equals r.CarID
+                             on c.CarId equals r.CarId
                              join b in context.Brands
-                             on c.BrandID equals b.BrandID
+                             on c.BrandId equals b.BrandId
                              join cstmr in context.Customers
-                             on r.CustomerID equals cstmr.CustomerID
+                             on r.CustomerId equals cstmr.CustomerId
                              join u in context.Users
-                             on cstmr.UserID equals u.Id
+                             on cstmr.UserId equals u.Id
                              select new RentalDetailDto 
                              {
-                                  RentalID = r.RentalID,
+                                  RentalId = r.RentalId,
                                   CarName = b.BrandName,
                                   CustomerName = u.FirstName,
                                   CustomerLastName= u.LastName,
@@ -44,9 +44,9 @@ namespace DataAccess.Concrete.EntityFramework
         
         public bool DeleteRentalIfNotReturnDateNull(Rental rental)
         {
-            using (CarRentalCompanyContext context = new CarRentalCompanyContext())
+            using (RentACarContext context = new RentACarContext())
             {
-                var find = context.Rentals.Any(i => i.RentalID == rental.RentalID && i.ReturnDate == null);
+                var find = context.Rentals.Any(i => i.RentalId == rental.RentalId && i.ReturnDate == null);
                 if (!find)
                 {
                     context.Remove(rental);

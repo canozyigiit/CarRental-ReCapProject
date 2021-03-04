@@ -30,10 +30,10 @@ namespace Business.Concrete
         public IDataResult<User> GetById(int userId)
 
         {
-            return new SuccessDataResult<User>(_userDal.Get(u=> u.Id == userId), Messages.Listed);
-        }       
+            return new SuccessDataResult<User>(_userDal.Get(u => u.Id == userId), Messages.Listed);
+        }
 
-        [ValidationAspect(typeof(UserValidator), Priority =1)]
+        [ValidationAspect(typeof(UserValidator), Priority = 1)]
 
         public IResult Delete(User user)
         {
@@ -47,7 +47,7 @@ namespace Business.Concrete
 
         }
 
-        [ValidationAspect(typeof(UserValidator), Priority =1)]
+        [ValidationAspect(typeof(UserValidator), Priority = 1)]
         public IResult Update(User user)
         {
             _userDal.Update(user);
@@ -67,7 +67,8 @@ namespace Business.Concrete
 
         public IDataResult<User> GetByEmail(string email)
         {
-            return new SuccessDataResult<User>(_userDal.Get(u=> u.Email == email));
+            return new SuccessDataResult<User>(_userDal.Get(u => u.Email == email));
         }
     }
+
 }

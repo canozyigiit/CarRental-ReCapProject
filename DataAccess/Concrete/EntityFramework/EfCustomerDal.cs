@@ -9,22 +9,22 @@ using System.Linq;
 
 namespace DataAccess.Concrete.EntityFramework
 {
-    public class EfCustomerDal : EfEntityRepositoryBase<Customer, CarRentalCompanyContext>, ICustomerDal
+    public class EfCustomerDal : EfEntityRepositoryBase<Customer, RentACarContext>, ICustomerDal
     {
         public List<CustomerRentalDetailDto> GetRentalAndCustomerDetails()
         {
-            using (CarRentalCompanyContext context = new CarRentalCompanyContext())
+            using (RentACarContext context = new RentACarContext())
             {
                 var result = from c in context.Customers
                     join u in context.Users
-                        on c.UserID equals u.Id
+                        on c.UserId equals u.Id
                     join r in context.Rentals
-                        on c.CustomerID equals r.CustomerID
+                        on c.CustomerId equals r.CustomerId
                     select new CustomerRentalDetailDto
                     {
-                        CustomerID = c.CustomerID,
-                        UserID = u.Id,
-                        RentalID = r.RentalID,
+                        CustomerId = c.CustomerId,
+                        UserId = u.Id,
+                        RentalId = r.RentalId,
                         RentDate = r.RentDate,
                         ReturnDate = r.ReturnDate
                     };
@@ -34,14 +34,14 @@ namespace DataAccess.Concrete.EntityFramework
 
         public List<CustomerDetailDto> GetCustomerDetails()
         {
-            using (CarRentalCompanyContext context = new CarRentalCompanyContext())
+            using (RentACarContext context = new RentACarContext())
             {
                 var result = from a in GetRentalAndCustomerDetails()
                     join c in context.Customers
-                        on a.CustomerID equals c.CustomerID
+                        on a.CustomerId equals c.CustomerId
                     select new CustomerDetailDto
                     {
-                        CustomerID = a.CustomerID,
+                        CustomerId = a.CustomerId,
                         CompanyName = c.CompanyName
                     };
                 return result.ToList();
@@ -50,9 +50,9 @@ namespace DataAccess.Concrete.EntityFramework
         
         public bool DeleteCustomerIfNotReturnDateNull(Customer customer)
         {
-            using (CarRentalCompanyContext context = new CarRentalCompanyContext())
+            using (RentACarContext context = new RentACarContext())
             {
-                var find = context.Rentals.Any(i => i.CustomerID == customer.CustomerID && i.ReturnDate == null);
+                var find = context.Rentals.Any(i => i.CustomerId == customer.CustomerId && i.ReturnDate == null);
                 if (!find)
                 {
                     context.Remove(customer);
