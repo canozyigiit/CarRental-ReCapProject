@@ -26,10 +26,9 @@ namespace Business.Concrete
         {
             _imageDal = imageDal;
         }
-
-        [CacheAspect]
-        [PerformanceAspect(5)]
         [SecuredOperation("admin")]
+        [CacheAspect]
+        [PerformanceAspect(5)]        
         public IDataResult<List<CarImage>> GetAll()
         {
             return new SuccessDataResult<List<CarImage>>(_imageDal.GetAll(), Messages.Listed);

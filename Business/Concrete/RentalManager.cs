@@ -23,9 +23,9 @@ namespace Business.Concrete
         {
             _rentalDal = rentalDal;
         }
+        [SecuredOperation("admin")]
         [CacheAspect]
         [PerformanceAspect(5)]
-        [SecuredOperation("admin")]
         public IDataResult<List<Rental>> GetAll()
         {
             return new SuccessDataResult<List<Rental>>(_rentalDal.GetAll(), Messages.Listed);

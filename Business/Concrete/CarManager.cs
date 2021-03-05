@@ -24,9 +24,9 @@ namespace Business.Concrete
         {
             _carDal = carDal;
         }
+        [SecuredOperation("admin")]
         [CacheAspect]
         [PerformanceAspect(5)]
-        [SecuredOperation("admin")]
         public IDataResult<List<Car>> GetAll()
         {
             return new SuccessDataResult<List<Car>>(_carDal.GetAll(), Messages.Listed);

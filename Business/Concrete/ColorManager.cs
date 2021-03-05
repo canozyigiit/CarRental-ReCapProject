@@ -23,9 +23,9 @@ namespace Business.Concrete
         {
             _colorDal = colorDal;
         }
+        [SecuredOperation("admin")]
         [CacheAspect]
         [PerformanceAspect(5)]
-        [SecuredOperation("admin")]
         public IDataResult<List<Color>> GetAll()
         {
             return new SuccessDataResult<List<Color>>(_colorDal.GetAll(), Messages.Listed);

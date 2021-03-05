@@ -23,9 +23,9 @@ namespace Business.Concrete
         {
             _userDal = userDal;
         }
+        [SecuredOperation("admin")]
         [CacheAspect]
         [PerformanceAspect(5)]
-        [SecuredOperation("admin")]
         public IDataResult<List<User>> GetAll()
 
         {

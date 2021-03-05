@@ -23,10 +23,9 @@ namespace Business.Concrete
         {
             _brandDal = brandDal;
         }
-
-        [CacheAspect]
-        [PerformanceAspect(5)]
         [SecuredOperation("admin")]
+        [CacheAspect]
+        [PerformanceAspect(5)]    
         public IDataResult<List<Brand>> GetAll()
         {
             return new SuccessDataResult<List<Brand>>(_brandDal.GetAll(), Messages.Listed);

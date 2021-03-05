@@ -23,9 +23,9 @@ namespace Business.Concrete
         {
             _customerDal = customerDal;
         }
+        [SecuredOperation("admin")]
         [CacheAspect]
         [PerformanceAspect(5)]
-        [SecuredOperation("admin")]
         public IDataResult<List<Customer>> GetAll()
         {
             return new SuccessDataResult<List<Customer>>(_customerDal.GetAll(), Messages.Listed);
