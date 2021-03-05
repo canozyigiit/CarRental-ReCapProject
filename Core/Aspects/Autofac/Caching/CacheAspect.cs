@@ -31,7 +31,7 @@ namespace Core.Aspects.Autofac.Caching
                 invocation.ReturnValue = _cacheManager.Get(key);//varsa cacheden getir
                 return;
             }
-            invocation.Proceed();//yoksa bellekten getir
+            invocation.Proceed();//yoksa veritabanından getir
             _cacheManager.Add(key, invocation.ReturnValue, _duration);//ve cache ekle
         }
     }
