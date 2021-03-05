@@ -9,6 +9,9 @@ using System.Collections.Generic;
 using System.Text;
 using Business.ValidationRules.FluentValidation;
 using Core.Aspects.Autofac.Validation;
+using Core.Aspects.Autofac.Performance;
+using Core.Aspects.Autofac.Caching;
+using Business.BusinessAspects.Autofac;
 
 namespace Business.Concrete
 {
@@ -20,24 +23,27 @@ namespace Business.Concrete
         {
             _customerDal = customerDal;
         }
-
+        [CacheAspect]
+        [PerformanceAspect(5)]
+        [SecuredOperation("admin")]
         public IDataResult<List<Customer>> GetAll()
         {
             return new SuccessDataResult<List<Customer>>(_customerDal.GetAll(), Messages.Listed);
         }
-
+        [CacheAspect]
         public IDataResult<Customer> GetById(int customerId)
         {
             return new SuccessDataResult<Customer>(_customerDal.Get(c => c.CustomerId == customerId));
         }
 
         [ValidationAspect(typeof(CustomerValidator), Priority =1)]
+        [CacheRemoveAspect("ICustomerService.Get")]
         public IResult Add(Customer customer)
         {
             _customerDal.Add(customer);
             return new SuccessResult(Messages.Added);
         }
-
+        [CacheRemoveAspect("ICustomerService.Get")]
         public IResult Delete(Customer customer)
         {
             var result = _customerDal.DeleteCustomerIfNotReturnDateNull(customer);
@@ -51,6 +57,7 @@ namespace Business.Concrete
         }
 
         [ValidationAspect(typeof(CustomerValidator), Priority =1)]
+        [CacheRemoveAspect("ICustomerService.Get")]
         public IResult Update(Customer customer)
         {
             _customerDal.Update(customer);

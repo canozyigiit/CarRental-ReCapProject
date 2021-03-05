@@ -10,11 +10,11 @@ namespace Business.ValidationRules.FluentValidation
         public UserValidator()
         {
             RuleFor(u => u.FirstName).NotEmpty().WithMessage(AspectMessages.CanNotBeBlank);
-            RuleFor(u => u.FirstName).MinimumLength(2);
+            RuleFor(u => u.FirstName).Length(2,15);
             
             
             RuleFor(u => u.LastName).NotEmpty().WithMessage(AspectMessages.CanNotBeBlank);
-            RuleFor(u => u.LastName).MinimumLength(2);
+            RuleFor(u => u.LastName).Length(2, 15);
 
             RuleFor(u => u.Email).NotEmpty().WithMessage(AspectMessages.CanNotBeBlank);
             RuleFor(u => u.Email).EmailAddress().WithMessage(AspectMessages.InvalidEmailAddress);

@@ -9,8 +9,8 @@ namespace Business.ValidationRules.FluentValidation
         public CustomerValidator()
         {
             RuleFor(c => c.CompanyName).NotEmpty().WithMessage(AspectMessages.CanNotBeBlank);
-            RuleFor(c => c.CompanyName).MinimumLength(2);
-            
+            RuleFor(c => c.CompanyName).Length(2, 15);
+
             RuleFor(c => c.UserId).NotEmpty().WithMessage(AspectMessages.CanNotBeBlank);
         }
     }

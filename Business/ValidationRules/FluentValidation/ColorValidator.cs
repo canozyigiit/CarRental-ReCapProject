@@ -9,7 +9,7 @@ namespace Business.ValidationRules.FluentValidation
         public ColorValidator()
         {
             RuleFor(c => c.ColorName).NotEmpty().WithMessage(AspectMessages.CanNotBeBlank);
-            RuleFor(c => c.ColorName).MinimumLength(2);
+            RuleFor(c => c.ColorName).Length(2,10);
         }
     }
 }

@@ -5,6 +5,9 @@ using System.Linq;
 using System.Net.Mime;
 using System.Text;
 using Business.Abstract;
+using Business.BusinessAspects.Autofac;
+using Core.Aspects.Autofac.Caching;
+using Core.Aspects.Autofac.Performance;
 using Core.Constants;
 using Core.Utilities.Business;
 using Core.Utilities.Results;
@@ -24,11 +27,15 @@ namespace Business.Concrete
             _imageDal = imageDal;
         }
 
+        [CacheAspect]
+        [PerformanceAspect(5)]
+        [SecuredOperation("admin")]
         public IDataResult<List<CarImage>> GetAll()
         {
             return new SuccessDataResult<List<CarImage>>(_imageDal.GetAll(), Messages.Listed);
         }
 
+        [CacheAspect]
         public IDataResult<List<CarImage>> GetImagesByCarId(int carId)
         {
             //return new SuccessDataResult<List<CarImage>>(_imageDal.GetAll(i => i.CarID == carId), Messages.Listed);
@@ -46,12 +53,14 @@ namespace Business.Concrete
             return new SuccessDataResult<List<CarImage>>(images);
         }
 
+        [CacheAspect]
         public IDataResult<CarImage> GetById(int imageId)
         {
             return new SuccessDataResult<CarImage>(_imageDal.Get(i => i.ImageId == imageId));
 
         }
 
+        [CacheRemoveAspect("ICarImageService.Get")]
         public IResult Add(IFormFile file, CarImage carImage)
         {
 
@@ -66,6 +75,7 @@ namespace Business.Concrete
             return new SuccessResult("Car image added");
         }
 
+        [CacheRemoveAspect("ICarImageService.Get")]
         public IResult Update(IFormFile file,CarImage carImage)
         {
             var image = _imageDal.Get(c => c.ImageId == carImage.ImageId);
@@ -84,6 +94,7 @@ namespace Business.Concrete
             return new SuccessResult("Car image updated");
         }
 
+        [CacheRemoveAspect("ICarImageService.Get")]
         public IResult Delete(CarImage carImage)
         {
             var image = _imageDal.Get(c => c.ImageId == carImage.ImageId);

@@ -9,6 +9,9 @@ using System.Text;
 using Business.ValidationRules.FluentValidation;
 using Core.Aspects.Autofac.Validation;
 using Entities.DTOs;
+using Core.Aspects.Autofac.Caching;
+using Core.Aspects.Autofac.Performance;
+using Business.BusinessAspects.Autofac;
 
 namespace Business.Concrete
 {
@@ -20,18 +23,21 @@ namespace Business.Concrete
         {
             _colorDal = colorDal;
         }
-
+        [CacheAspect]
+        [PerformanceAspect(5)]
+        [SecuredOperation("admin")]
         public IDataResult<List<Color>> GetAll()
         {
             return new SuccessDataResult<List<Color>>(_colorDal.GetAll(), Messages.Listed);
         }
-
+        [CacheAspect]
         public IDataResult<Color> GetById(int colorId)
         {
             return new SuccessDataResult<Color>(_colorDal.Get(c => c.ColorId == colorId), Messages.Listed);
         }
 
         [ValidationAspect(typeof(ColorValidator), Priority =1)]
+        [CacheRemoveAspect("IColorService.Get")]
         public IResult Add(Color color)
         {
             _colorDal.Add(color);
@@ -39,12 +45,13 @@ namespace Business.Concrete
         }
 
         [ValidationAspect(typeof(ColorValidator), Priority =1)]
+        [CacheRemoveAspect("IColorService.Get")]
         public IResult Update(Color color)
         {
             _colorDal.Update(color);
             return new SuccessResult(Messages.Updated);
         }
-
+        [CacheRemoveAspect("IColorService.Get")]
         public IResult Delete(Color color)
         {
             var result = _colorDal.DeleteColorIfNotReturnDateNull(color);

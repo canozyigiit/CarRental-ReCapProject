@@ -10,6 +10,9 @@ using System.Linq;
 using System.Text;
 using Business.ValidationRules.FluentValidation;
 using Core.Aspects.Autofac.Validation;
+using Core.Aspects.Autofac.Caching;
+using Core.Aspects.Autofac.Performance;
+using Business.BusinessAspects.Autofac;
 
 namespace Business.Concrete
 {
@@ -21,28 +24,31 @@ namespace Business.Concrete
         {
             _carDal = carDal;
         }
-
+        [CacheAspect]
+        [PerformanceAspect(5)]
+        [SecuredOperation("admin")]
         public IDataResult<List<Car>> GetAll()
         {
             return new SuccessDataResult<List<Car>>(_carDal.GetAll(), Messages.Listed);
         }
-
+        [CacheAspect]
         public IDataResult<Car> GetById(int carId)
         {
             return new SuccessDataResult<Car>(_carDal.Get(c=> c.CarId == carId), Messages.Listed);
         }
-
+        [CacheAspect]
         public IDataResult<List<Car>> GetCarsByColorId(int colorId)
         {
             return new SuccessDataResult<List<Car>>(_carDal.GetAll(c=> c.ColorId == colorId), Messages.Listed);
         }
-
+        [CacheAspect]
         public IDataResult<List<CarDetailDto>> GetCarDetails()
         {
             return  new SuccessDataResult<List<CarDetailDto>>(_carDal.GetCarDetails(), Messages.Listed);
         }
 
         [ValidationAspect(typeof(CarValidator), Priority =1)]
+        [CacheRemoveAspect("ICarService.Get")]
         public IResult  Add(Car car)
         {
             if (car.DailyPrice < 0)
@@ -55,7 +61,7 @@ namespace Business.Concrete
                 return new SuccessResult(Messages.Added);
             }
         }
-
+        [CacheRemoveAspect("ICarService.Get")]
         public IResult Delete(Car car)
         {
             var result = _carDal.DeleteCarIfNotReturnDateNull(car);
@@ -68,6 +74,7 @@ namespace Business.Concrete
         }
 
         [ValidationAspect(typeof(CarValidator), Priority =1)]
+        [CacheRemoveAspect("ICarService.Get")]
         public IResult Update(Car car)
         {
             _carDal.Update(car);
