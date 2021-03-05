@@ -4,7 +4,6 @@ using System.Text;
 
 namespace Core.Constants
 {
-    // Bu class, yalnızca Northwind projesinin mesajları olduğu için Business katmanı içerisinde Contants(Araçlar) kalsöründe tanımlandı.
     public static class Messages
     {
         public static string Listed = "Listed!";
