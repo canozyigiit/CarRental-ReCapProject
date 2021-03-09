@@ -81,6 +81,12 @@ namespace Business.Concrete
             return new SuccessResult(Messages.Updated);
         }
 
-       
+        public IResult TransactionalOperation(Car car)
+        {
+            _carDal.Add(car);
+            _carDal.Update(car);
+            _carDal.Delete(car);
+            return new SuccessResult(Messages.Updated);
+        }
     }
 }

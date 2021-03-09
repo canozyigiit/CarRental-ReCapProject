@@ -117,5 +117,13 @@ namespace Business.Concrete
             }
             return new SuccessResult();
         }
+
+        public IResult TransactionalOperation(CarImage carImage)
+        {
+            _imageDal.Add(carImage);
+            _imageDal.Update(carImage);
+            _imageDal.Delete(carImage);
+            return new SuccessResult(Messages.Updated);
+        }
     }
 }
