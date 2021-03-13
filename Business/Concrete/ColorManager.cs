@@ -23,7 +23,7 @@ namespace Business.Concrete
         {
             _colorDal = colorDal;
         }
-        [SecuredOperation("admin")]
+        //[SecuredOperation("admin")]
         [CacheAspect]
         [PerformanceAspect(5)]
         public IDataResult<List<Color>> GetAll()

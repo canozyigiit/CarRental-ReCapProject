@@ -23,7 +23,7 @@ namespace Business.Concrete
         {
             _customerDal = customerDal;
         }
-        [SecuredOperation("admin")]
+        //[SecuredOperation("admin")]
         [CacheAspect]
         [PerformanceAspect(5)]
         public IDataResult<List<Customer>> GetAll()

@@ -23,7 +23,7 @@ namespace Business.Concrete
         {
             _brandDal = brandDal;
         }
-        [SecuredOperation("admin")]
+        //[SecuredOperation("admin")]
         [CacheAspect]
         [PerformanceAspect(5)]    
         public IDataResult<List<Brand>> GetAll()
