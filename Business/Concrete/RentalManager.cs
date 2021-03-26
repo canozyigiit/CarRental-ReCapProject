@@ -6,6 +6,7 @@ using Entities.Concrete;
 using Entities.DTOs;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using Business.ValidationRules.FluentValidation;
 using Core.Aspects.Autofac.Validation;
@@ -79,6 +80,28 @@ namespace Business.Concrete
             _rentalDal.Update(rental);
             return new SuccessResult(Messages.Updated);
         }
+        public IDataResult<List<Rental>> GetByCarId(int carId)
+        {
+            return new SuccessDataResult<List<Rental>>(_rentalDal.GetAll(rental => rental.CarId == carId));
+        }
 
+        public IResult IsRentable(Rental rental)
+        {
+            var result = this.GetByCarId(rental.CarId).Data.LastOrDefault();
+            if (IsDelivered(rental).SuccessStatus || (rental.ReturnDate > result.ReturnDate && rental.RentDate >= DateTime.Now))
+            {
+                return new SuccessResult();
+            }
+            return new ErrorResult();
+        }
+
+        public IResult IsDelivered(Rental rental)
+        {
+            var result = this.GetByCarId(rental.CarId).Data.LastOrDefault();
+            if (result == null || result.ReturnDate != default)
+                return new SuccessResult();
+            return new ErrorResult();
+
+        }
     }
 }

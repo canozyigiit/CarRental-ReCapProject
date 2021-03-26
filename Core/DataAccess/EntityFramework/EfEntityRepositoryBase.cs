@@ -16,9 +16,9 @@ namespace Core.DataAccess.EntityFramework
         {
             using (TContext context = new TContext())
             {
-                var addedEntity = context.Entry(entity); // veri tabanı bağlantısındaki entity ye abone ol, addedEntity değişkenine at.
-                addedEntity.State = EntityState.Added; // addedEntity değişkeni üzerinden, durumu ekleme komutuna çek ve ekleme işlemini gerçekleştir.
-                context.SaveChanges(); // veritabanı bağlantısı üzerinden değişiklikleri kaydet.
+                var addedEntity = context.Entry(entity); 
+                addedEntity.State = EntityState.Added; 
+                context.SaveChanges(); 
             }
         }
 

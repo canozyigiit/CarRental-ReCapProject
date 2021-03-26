@@ -26,7 +26,7 @@ namespace Business.Concrete
         {
             _imageDal = imageDal;
         }
-        [SecuredOperation("admin")]
+      //  [SecuredOperation("admin")]
         [CacheAspect]
         [PerformanceAspect(5)]        
         public IDataResult<List<CarImage>> GetAll()
@@ -37,19 +37,19 @@ namespace Business.Concrete
         [CacheAspect]
         public IDataResult<List<CarImage>> GetImagesByCarId(int carId)
         {
-            //return new SuccessDataResult<List<CarImage>>(_imageDal.GetAll(i => i.CarID == carId), Messages.Listed);
+            return new SuccessDataResult<List<CarImage>>(_imageDal.GetAll(i => i.CarId == carId), Messages.Listed);
 
-            var result = _imageDal.GetAll(i => i.CarId == carId);
+            //var result = _imageDal.GetAll(i => i.CarId == carId);
 
-            if (result.Count > 0)
-            {
-                return new SuccessDataResult<List<CarImage>>(result);
-            }
+            //if (result.Count > 0)
+            //{
+            //    return new SuccessDataResult<List<CarImage>>(result);
+            //}
 
-            List<CarImage> images = new List<CarImage>();
-            images.Add(new CarImage() { CarId = 0, ImageId = 0, Date = DateTime.Now, ImagePath = "/images/car-rent.png" });
+            //List<CarImage> images = new List<CarImage>();
+            //images.Add(new CarImage() { CarId = 0, ImageId = 0, Date = DateTime.Now, ImagePath = "/images/car-rent.png" });
 
-            return new SuccessDataResult<List<CarImage>>(images);
+            //return new SuccessDataResult<List<CarImage>>(images);
         }
 
         [CacheAspect]
