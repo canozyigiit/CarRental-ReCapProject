@@ -14,12 +14,14 @@ using Core.Aspects.Autofac.Caching;
 using Core.Aspects.Autofac.Performance;
 using Business.BusinessAspects.Autofac;
 using Core.Aspects.Autofac.Transaction;
+using Core.Utilities.Business;
 
 namespace Business.Concrete
 {
     public class CarManager : ICarService
     {
         ICarDal _carDal;
+        private IBrandService _brandService;
 
         public CarManager(ICarDal carDal)
         {
@@ -57,27 +59,21 @@ namespace Business.Concrete
         [CacheRemoveAspect("ICarService.Get")]
         public IResult  Add(Car car)
         {
-            if (car.DailyPrice < 0)
-            {
-                return new ErrorResult(Messages.InvalidEntry);
-            }
-            else
-            {
-                _carDal.Add(car);
-                return new SuccessResult(Messages.Added);
-            }
+            IResult result = BusinessRules.Run(CheckIfCarDescriptionExists(car.Description), CheckIfBrandLimitExceded());
+            
+            _carDal.Add(car);
+            return new SuccessResult(Messages.Added);
+            
         }
         [CacheRemoveAspect("ICarService.Get")]
         public IResult Delete(Car car)
         {
-            var result = _carDal.DeleteCarIfNotReturnDateNull(car);
-            if (result)
-            {
-                return new SuccessResult(Messages.Deleted);
-            }
 
-            return new ErrorResult(Messages.NotDeleted);
+            _carDal.Delete(car);
+            return new SuccessResult(Messages.Deleted);
+            
         }
+
 
         [ValidationAspect(typeof(CarValidator), Priority =1)]
         [CacheRemoveAspect("ICarService.Get")]
@@ -114,7 +110,24 @@ namespace Business.Concrete
         {
             return new SuccessDataResult<List<CarDetailDto>>(_carDal.GetCarDetails(c => c.CarId == carId));
         }
+        private IResult CheckIfCarDescriptionExists(string description)
+        {
+            var result = _carDal.GetAll(c => c.Description == description).Any();
+            if (result)
+            {
+                return new ErrorResult(Messages.DescriptionAlreadyExists);
+            }
+            return new SuccessResult();
+        }
+        private IResult CheckIfBrandLimitExceded()
+        {
+            var result = _brandService.GetAll();
+            if ( result.Data.Count> 5)
+            {
+                return new ErrorResult(Messages.BrandLimitExceded);
+            }
 
-
+            return new SuccessResult();
+        }
     }
 }

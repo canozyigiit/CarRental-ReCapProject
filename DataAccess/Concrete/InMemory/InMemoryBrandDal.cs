@@ -16,11 +16,7 @@ namespace DataAccess.Concrete.InMemory
         {
             _brands = new List<Brand>
             {
-                new Brand{BrandId = 1, BrandName= "Citroen", BrandModel = "DS7 Crossback"},
-                new Brand{BrandId = 2, BrandName= "Jeep", BrandModel = "Renegade"},
-                new Brand{BrandId = 3, BrandName= "Mini Cooper", BrandModel = "Countryman"},
-                new Brand{BrandId = 4, BrandName= "Audi", BrandModel = "A3"},
-                new Brand{BrandId = 1, BrandName= "Mercedes", BrandModel = "CLA"}
+               
             };
         }
         public void Add(Brand entity)
@@ -60,7 +56,6 @@ namespace DataAccess.Concrete.InMemory
             Brand brandToUpdate = _brands.SingleOrDefault(b => b.BrandId == entity.BrandId);
             brandToUpdate.BrandId = entity.BrandId;
             brandToUpdate.BrandName = entity.BrandName;
-            brandToUpdate.BrandModel = entity.BrandModel;
         }
     }
 }

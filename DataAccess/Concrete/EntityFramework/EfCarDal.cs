@@ -26,7 +26,6 @@ namespace DataAccess.Concrete.EntityFramework
                     {
                         CarId = c.CarId,
                         BrandName = b.BrandName,
-                        BrandModel = b.BrandModel,
                         ColorName = co.ColorName,
                         ModelYear = c.ModelYear,
                         DailyPrice = c.DailyPrice,
@@ -35,23 +34,6 @@ namespace DataAccess.Concrete.EntityFramework
                     };
                 return result.ToList();
             }
-        }
-
-
-        public bool DeleteCarIfNotReturnDateNull(Car car)
-        {
-            using (RentACarContext context = new RentACarContext())
-            {
-                var find = context.Rentals.Any(i => i.CarId == car.CarId && i.ReturnDate == null);
-                if (!find)
-                {
-                    context.Remove(car);
-                    context.SaveChanges();
-                    return true;
-                }
-                return false;
-            }
-            
         }
 
     }
