@@ -1,10 +1,10 @@
-##CarRentalProject - Backend
+## CarRentalProject - Backend
 Integrated Development Environment : Visual Studio 2019
 
-##About The Project
+## About The Project
 RENTACAR is a car rental project with a secure system where you can apply CRUD transactions in your jurisdiction to your models prepared with the C# programming language under the name ASP Net Core platform, and you can use it to rent a car, and your information is kept confidential during the registration process.
 
-##Logo
+## Logo
 Built With
 C# - Programming Language
 ASP.NET - Web Development Platform
