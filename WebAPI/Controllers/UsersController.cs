@@ -6,16 +6,17 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Entities.DTOs;
 
 namespace WebAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class USersController : ControllerBase
+    public class UsersController : ControllerBase
     {
         IUserService _userService;
 
-        public USersController(IUserService userService)
+        public UsersController(IUserService userService)
         {
             _userService = userService;
         }
@@ -30,6 +31,17 @@ namespace WebAPI.Controllers
             }
             return BadRequest(result);
         }
+        [HttpGet("getclaims")]
+        public IActionResult GetClaims(User user)
+        {
+            var result = _userService.GetClaims(user);
+            if (result.SuccessStatus)
+            {
+                return Ok(result);
+            }
+            return BadRequest(result);
+        }
+
 
         [HttpGet("getbyid")]
         public IActionResult GetById(int userId)
@@ -41,8 +53,28 @@ namespace WebAPI.Controllers
             }
             return BadRequest(result);
         }
+        [HttpGet("getbyemail")]
+        public IActionResult GetById(string email)
+        {
+            var result = _userService.GetByEmail(email);
+            if (result.SuccessStatus)
+            {
+                return Ok(result);
+            }
+            return BadRequest(result);
+        }
 
 
+        [HttpPost("edit")]
+        public IActionResult EditProfile(UserUpdateDto user)
+        {
+            var result = _userService.EditProfile(user);
+            if (result.SuccessStatus)
+            {
+                return Ok(result);
+            }
+            return BadRequest(result);
+        }
 
         [HttpPost("add")]
         public IActionResult Add(User user)

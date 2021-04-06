@@ -36,7 +36,7 @@ namespace Business.Concrete
         {
             return new SuccessDataResult<Brand>(_brandDal.Get(b => b.BrandId == brandId), Messages.Listed);
         }
-
+        [SecuredOperation("admin")]
         [ValidationAspect(typeof(BrandValidator), Priority = 1)]
         [CacheRemoveAspect("IBrandService.Get")]
         public IResult Add(Brand brand)

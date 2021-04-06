@@ -18,7 +18,5 @@ namespace Core.Constants
         public static string MaintenanceTime = "Maintenance Time";
         public static string InvalidEntry = "Invalid Entry";
         public static string NotAvailable = "Not Available";
-        public static string BrandLimitExceded = "Marka araç limiti dolu";
-        public static string DescriptionAlreadyExists ="Aynı açıklamada zaten bir araç var";
     }
 }

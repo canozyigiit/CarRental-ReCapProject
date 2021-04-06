@@ -12,6 +12,7 @@ using Core.Entities.Concrete;
 using Core.Aspects.Autofac.Caching;
 using Core.Aspects.Autofac.Performance;
 using Business.BusinessAspects.Autofac;
+using Core.Utilities.Security.Hashing;
 
 namespace Business.Concrete
 {
@@ -23,7 +24,7 @@ namespace Business.Concrete
         {
             _userDal = userDal;
         }
-        [SecuredOperation("admin")]
+      // [SecuredOperation("admin")]
         [CacheAspect]
         [PerformanceAspect(5)]
         public IDataResult<List<User>> GetAll()
@@ -33,9 +34,8 @@ namespace Business.Concrete
         }
         [CacheAspect]
         public IDataResult<User> GetById(int userId)
-
         {
-            return new SuccessDataResult<User>(_userDal.Get(u => u.Id == userId), Messages.Listed);
+            return new SuccessDataResult<User>(_userDal.Get(u => u.Id == userId));
         }
 
         [ValidationAspect(typeof(UserValidator), Priority = 1)]
@@ -60,10 +60,32 @@ namespace Business.Concrete
             _userDal.Update(user);
             return new SuccessResult(Messages.Updated);
         }
+
         [CacheAspect]
         public IDataResult<List<OperationClaim>> GetClaims(User user)
         {
             return new SuccessDataResult<List<OperationClaim>>(_userDal.GetClaims(user));
+        }
+        public IResult EditProfile(UserUpdateDto user)
+        {
+            byte[] passwordHash;
+            byte[] passwordSalt;
+
+            HashingHelper.CreatePasswordHash(user.Password, out passwordHash, out passwordSalt);
+
+            var userInfo = new User()
+            {
+                Id = user.Id,
+                FirstName = user.FirstName,
+                LastName = user.LastName,
+                Email = user.Email,
+                PasswordHash = passwordHash,
+                PasswordSalt = passwordSalt,
+                Status = true
+            };
+
+            _userDal.Update(userInfo);
+            return new SuccessResult(Messages.Updated);
         }
 
         [ValidationAspect(typeof(UserValidator), Priority = 1)]

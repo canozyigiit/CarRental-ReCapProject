@@ -7,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Linq;
+using System.Linq.Expressions;
 
 namespace DataAccess.Concrete.EntityFramework
 {
@@ -16,46 +17,27 @@ namespace DataAccess.Concrete.EntityFramework
         {
             using (RentACarContext context = new RentACarContext())
             {
-                var result = from c in context.Cars
-                             join r in context.Rentals
-                             on c.CarId equals r.CarId
-                             join b in context.Brands
-                             on c.BrandId equals b.BrandId
-                             join cstmr in context.Customers
-                             on r.CustomerId equals cstmr.CustomerId
-                             join u in context.Users
-                             on cstmr.UserId equals u.Id
-                             select new RentalDetailDto 
-                             {
-                                  RentalId = r.RentalId,
-                                  CarName = b.BrandName,
-                                  CustomerName = u.FirstName,
-                                  CustomerLastName= u.LastName,
-                                  CompanyName= cstmr.CompanyName,
-                                  RentDate = r.RentDate,
-                                  ReturnDate=r.ReturnDate
-                                                              
-                             };
+                var result = from rental in context.Rentals
+                    join car in context.Cars on rental.CarId equals car.CarId
+                    join customer in context.Customers on rental.CustomerId equals customer.CustomerId
+                    join user in context.Users on customer.UserId equals user.Id
+                    join brand in context.Brands on car.BrandId equals brand.BrandId
+                    select new RentalDetailDto()
+                    {
+                        RentalId = rental.RentalId,
+                        CarDescription = car.Description,
+                        CarBrand = brand.BrandName,
+                        CarModel = car.ModelYear,
+                        CompanyName = customer.CompanyName,
+                        FirstName = user.FirstName,
+                        LastName = user.LastName,
+                        RentDate = rental.RentDate,
+                        ReturnDate = rental.ReturnDate,
+                        CarId = car.CarId,
+                        UserId = user.Id
+                    };
                 return result.ToList();
-
             }
-        }
-        
-        
-        public bool DeleteRentalIfNotReturnDateNull(Rental rental)
-        {
-            using (RentACarContext context = new RentACarContext())
-            {
-                var find = context.Rentals.Any(i => i.RentalId == rental.RentalId && i.ReturnDate == null);
-                if (!find)
-                {
-                    context.Remove(rental);
-                    context.SaveChanges();
-                    return true;
-                }
-                return false;
-            }
-            
         }
     }
 }

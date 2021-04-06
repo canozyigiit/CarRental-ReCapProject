@@ -54,12 +54,12 @@ namespace Business.Concrete
         {
             return  new SuccessDataResult<List<CarDetailDto>>(_carDal.GetCarDetails(), Messages.Listed);
         }
-
+       // [SecuredOperation("admin")]
         [ValidationAspect(typeof(CarValidator), Priority =1)]
         [CacheRemoveAspect("ICarService.Get")]
         public IResult  Add(Car car)
         {
-            IResult result = BusinessRules.Run(CheckIfCarDescriptionExists(car.Description), CheckIfBrandLimitExceded());
+           // IResult result = BusinessRules.Run(CheckIfCarDescriptionExists(car.Description), CheckIfBrandLimitExceded());
             
             _carDal.Add(car);
             return new SuccessResult(Messages.Added);
@@ -115,7 +115,7 @@ namespace Business.Concrete
             var result = _carDal.GetAll(c => c.Description == description).Any();
             if (result)
             {
-                return new ErrorResult(Messages.DescriptionAlreadyExists);
+                return new ErrorResult(AspectMessages.DescriptionAlreadyExists);
             }
             return new SuccessResult();
         }
@@ -124,7 +124,7 @@ namespace Business.Concrete
             var result = _brandService.GetAll();
             if ( result.Data.Count> 5)
             {
-                return new ErrorResult(Messages.BrandLimitExceded);
+                return new ErrorResult(AspectMessages.BrandLimitExceded);
             }
 
             return new SuccessResult();

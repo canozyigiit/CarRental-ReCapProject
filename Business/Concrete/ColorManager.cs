@@ -23,7 +23,7 @@ namespace Business.Concrete
         {
             _colorDal = colorDal;
         }
-        //[SecuredOperation("admin")]
+       // [SecuredOperation("admin")]
         [CacheAspect]
         [PerformanceAspect(5)]
         public IDataResult<List<Color>> GetAll()
@@ -35,7 +35,7 @@ namespace Business.Concrete
         {
             return new SuccessDataResult<Color>(_colorDal.Get(c => c.ColorId == colorId), Messages.Listed);
         }
-
+        [SecuredOperation("admin")]
         [ValidationAspect(typeof(ColorValidator), Priority =1)]
         [CacheRemoveAspect("IColorService.Get")]
         public IResult Add(Color color)

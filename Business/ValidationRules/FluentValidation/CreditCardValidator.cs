@@ -6,7 +6,7 @@ using FluentValidation;
 
 namespace Business.ValidationRules.FluentValidation
 {
-   public class CreditCardValidator: AbstractValidator<CreditCard>
+   public class CreditCardValidator: AbstractValidator<UserCreditCard>
     {
         public CreditCardValidator()
         {

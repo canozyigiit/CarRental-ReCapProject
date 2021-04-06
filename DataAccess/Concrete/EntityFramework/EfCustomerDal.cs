@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Linq;
+using System.Linq.Expressions;
 
 namespace DataAccess.Concrete.EntityFramework
 {
@@ -32,23 +33,27 @@ namespace DataAccess.Concrete.EntityFramework
             }
         }
 
-        public List<CustomerDetailDto> GetCustomerDetails()
-        {
-            using (RentACarContext context = new RentACarContext())
+            public List<CustomerDetailDto> GetCustomerDetails(Expression<Func<Customer, bool>> filter = null)
             {
-                var result = from a in GetRentalAndCustomerDetails()
-                    join c in context.Customers
-                        on a.CustomerId equals c.CustomerId
-                    select new CustomerDetailDto
-                    {
-                        CustomerId = a.CustomerId,
-                        CompanyName = c.CompanyName
-                    };
-                return result.ToList();
+                using (RentACarContext context = new RentACarContext())
+                {
+                    var result = from customer in filter is null ? context.Customers : context.Customers.Where(filter)
+
+                        join user in context.Users on customer.UserId equals user.Id
+                        select new CustomerDetailDto()
+                        {
+                            CustomerId = customer.CustomerId,
+                            CompanyName = customer.CompanyName,
+                            FirstName = user.FirstName,
+                            LastName = user.LastName,
+                            Email = user.Email,
+                            FindexScore = customer.FindexScore
+                        };
+                    return result.ToList();
+                }
             }
-        }
-        
-        public bool DeleteCustomerIfNotReturnDateNull(Customer customer)
+
+            public bool DeleteCustomerIfNotReturnDateNull(Customer customer)
         {
             using (RentACarContext context = new RentACarContext())
             {

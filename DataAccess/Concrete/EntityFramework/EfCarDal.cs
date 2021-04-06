@@ -30,6 +30,7 @@ namespace DataAccess.Concrete.EntityFramework
                         ModelYear = c.ModelYear,
                         DailyPrice = c.DailyPrice,
                         Description = c.Description,
+                        FindexScore = c.FindexScore,
                         ImagePath = (from i in context.CarImages where i.CarId == c.CarId select i.ImagePath).ToList()
                     };
                 return result.ToList();

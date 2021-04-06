@@ -36,9 +36,13 @@ namespace Business.DependencyResolvers
             builder.RegisterType<UserManager>().As<IUserService>().SingleInstance();
             builder.RegisterType<EfUserDal>().As<IUserDal>().SingleInstance();
 
-            builder.RegisterType<CreditCardManager>().As<ICreditCardService>().SingleInstance();
-            builder.RegisterType<EfCreditCardDal>().As<ICreditCardDal>().SingleInstance();
+            builder.RegisterType<PaymentManager>().As<IPaymentService>().SingleInstance();
 
+            builder.RegisterType<UserCreditCardManager>().As<IUserCreditCardService>().SingleInstance();
+            builder.RegisterType<EfUserCreditCardDal>().As<IUserCreditCardDal>().SingleInstance();
+
+            builder.RegisterType<FindeksManager>().As<IFindeksService>().SingleInstance();
+          
             builder.RegisterType<CarImageManager>().As<ICarImageService>().SingleInstance();
             builder.RegisterType<EfCarImageDal>().As<ICarImageDal>().SingleInstance();
 
@@ -48,7 +52,9 @@ namespace Business.DependencyResolvers
             builder.RegisterType<AuthManager>().As<IAuthService>().SingleInstance();
             builder.RegisterType<JwtHelper>().As<ITokenHelper>().SingleInstance();
 
-          
+           
+
+
 
 
             var assembly = Assembly.GetExecutingAssembly();

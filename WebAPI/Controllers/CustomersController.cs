@@ -6,6 +6,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Core.Utilities.Results;
+using Entities.DTOs;
 
 namespace WebAPI.Controllers
 {
@@ -73,6 +75,25 @@ namespace WebAPI.Controllers
         public IActionResult Delete(Customer customer)
         {
             var result = _customerService.Delete(customer);
+            if (result.SuccessStatus)
+            {
+                return Ok(result);
+            }
+            return BadRequest(result);
+        }
+        [HttpGet("getcustomerdetails")]
+        public ActionResult GetCustomerDetails()
+        {
+            var result = _customerService.GetCustomerDetails();
+            if (result.SuccessStatus)
+                return Ok(result);
+            return BadRequest(result);
+        }
+
+        [HttpGet("getcustomerdetailbyuserid")]
+        public IActionResult GetCustomerDetailByUserId(int userId)
+        {
+            var result = _customerService.GetCustomerDetailByUserId(userId);
             if (result.SuccessStatus)
             {
                 return Ok(result);

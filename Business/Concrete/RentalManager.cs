@@ -13,95 +13,68 @@ using Core.Aspects.Autofac.Validation;
 using Core.Aspects.Autofac.Caching;
 using Core.Aspects.Autofac.Performance;
 using Business.BusinessAspects.Autofac;
+using Core.Utilities.Business;
 
 namespace Business.Concrete
 {
     public class RentalManager : IRentalService
     {
-        IRentalDal _rentalDal;
+        private IRentalDal _rentalDal;
 
         public RentalManager(IRentalDal rentalDal)
         {
             _rentalDal = rentalDal;
         }
-       // [SecuredOperation("admin")]
-        [CacheAspect]
-        [PerformanceAspect(5)]
+
         public IDataResult<List<Rental>> GetAll()
         {
-            return new SuccessDataResult<List<Rental>>(_rentalDal.GetAll(), Messages.Listed);
-        }
-        [CacheAspect]
-        public IDataResult<List<Rental>> GetRentalByUndelivered()
-        {
-            return new SuccessDataResult<List<Rental>>(_rentalDal.GetAll(r=> r.ReturnDate == null),Messages.Listed);
-        }
-        [CacheAspect]
-        public IDataResult<List<RentalDetailDto>> GetRentalDetails()
-        {
-            return new SuccessDataResult<List<RentalDetailDto>>(_rentalDal.GetRentalDetails(), Messages.Listed);
-        }
-        [CacheAspect]
-        public IDataResult<Rental> GetById(int carId)
-        {
-            return new SuccessDataResult<Rental>(_rentalDal.Get(r=> r.CarId == carId), Messages.Listed);
+            return new SuccessDataResult<List<Rental>>(_rentalDal.GetAll(), AspectMessages.RentalListed);
         }
 
-        [ValidationAspect(typeof(RentalValidator), Priority =1)]
-        [CacheRemoveAspect("IRentalService.Get")]
+        public IDataResult<List<RentalDetailDto>> GetDetailsAll()
+        {
+            return new SuccessDataResult<List<RentalDetailDto>>(_rentalDal.GetRentalDetails(), AspectMessages.RentalListed);
+        }
+
+        public IDataResult<Rental> GetById(int Id)
+        {
+            return new SuccessDataResult<Rental>(_rentalDal.Get(r => r.RentalId == Id), AspectMessages.RentalListed);
+        }
+
         public IResult Add(Rental rental)
         {
-            if (rental.ReturnDate == null)
+            var result = RentalCarControl(rental.CarId);
+            if (!result.SuccessStatus)
             {
-                return new ErrorResult(Messages.NotAvailable);
+                return new ErrorResult(AspectMessages.RentalNotDelivered);
             }
-            else
-            {
-                _rentalDal.Add(rental);
-                return new SuccessResult(Messages.Added);
-            }
+            _rentalDal.Add(rental);
+            return new SuccessResult(AspectMessages.RentalAdded);
         }
-        [CacheRemoveAspect("IRentalService.Get")]
-        public IResult Delete(Rental rental)
+
+        public IResult RentalCarControl(int carId)
         {
-            var result = _rentalDal.DeleteRentalIfNotReturnDateNull(rental);
+            var result = _rentalDal.GetAll(r => r.CarId == carId && r.ReturnDate != DateTime.Now.Date).Any();//to be corrected
             if (result)
             {
-                return new SuccessResult(Messages.Deleted);
+                return new ErrorResult(AspectMessages.RentalNotDelivered);
             }
 
-            return new ErrorResult(Messages.NotDeleted);
+            return new SuccessResult(AspectMessages.RentalSuccess);
         }
 
-        [ValidationAspect(typeof(RentalValidator), Priority =1)]
-        [CacheRemoveAspect("IRentalService.Get")]
+
         public IResult Update(Rental rental)
         {
             _rentalDal.Update(rental);
-            return new SuccessResult(Messages.Updated);
-        }
-        public IDataResult<List<Rental>> GetByCarId(int carId)
-        {
-            return new SuccessDataResult<List<Rental>>(_rentalDal.GetAll(rental => rental.CarId == carId));
+            return new SuccessResult(AspectMessages.RentalUpdated);
         }
 
-        public IResult IsRentable(Rental rental)
+        public IResult Delete(Rental rental)
         {
-            var result = this.GetByCarId(rental.CarId).Data.LastOrDefault();
-            if (IsDelivered(rental).SuccessStatus || (rental.ReturnDate > result.ReturnDate && rental.RentDate >= DateTime.Now))
-            {
-                return new SuccessResult();
-            }
-            return new ErrorResult();
-        }
-
-        public IResult IsDelivered(Rental rental)
-        {
-            var result = this.GetByCarId(rental.CarId).Data.LastOrDefault();
-            if (result == null || result.ReturnDate != default)
-                return new SuccessResult();
-            return new ErrorResult();
-
+            _rentalDal.Delete(rental);
+            return new SuccessResult(AspectMessages.RentalDeleted);
         }
     }
 }
+

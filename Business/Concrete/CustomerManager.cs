@@ -23,7 +23,7 @@ namespace Business.Concrete
         {
             _customerDal = customerDal;
         }
-        //[SecuredOperation("admin")]
+       // [SecuredOperation("admin")]
         [CacheAspect]
         [PerformanceAspect(5)]
         public IDataResult<List<Customer>> GetAll()
@@ -62,6 +62,15 @@ namespace Business.Concrete
         {
             _customerDal.Update(customer);
             return new SuccessResult(Messages.Updated);
+        }
+        public IDataResult<List<CustomerDetailDto>> GetCustomerDetails()
+        {
+            return new SuccessDataResult<List<CustomerDetailDto>>(_customerDal.GetCustomerDetails());
+        }
+
+        public IDataResult<List<CustomerDetailDto>> GetCustomerDetailByUserId(int userId)
+        {
+            return new SuccessDataResult<List<CustomerDetailDto>>(_customerDal.GetCustomerDetails(u => u.UserId == userId));
         }
     }
 }

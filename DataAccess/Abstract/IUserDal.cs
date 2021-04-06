@@ -9,8 +9,7 @@ namespace DataAccess.Abstract
 {
     public interface IUserDal :IEntityRepository<User>
     {
-        //List<CustomerRentalDetailDto> GetRentalAndCustomerDetails();
-        //List<UserDetailDto> GetUserAndCustomerDetails();
+       
         List<CustomerRentalDetailDto> GetCustomerAndRentalDetails();
         bool DeleteUserIfNotReturnDateNull(User user);
         List<OperationClaim> GetClaims(User user);

@@ -7,8 +7,8 @@ namespace Core.Utilities.Uploads.ImageUploads
 {
     public class FileHelper
     {
-        private static string _currentDirectory = Environment.CurrentDirectory + "\\wwwroot";
-        private static string _folderName = "\\Images\\";
+        private static string _currentDirectory = Directory.GetCurrentDirectory() + @"\wwwroot\";
+        private static string _folderName = @"Images\";
 
         public static IDataResult<string> Upload(IFormFile file)
         {
