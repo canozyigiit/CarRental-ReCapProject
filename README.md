@@ -6,6 +6,9 @@ Integrated Development Environment : Visual Studio 2019
 ![nugetPackage1](https://github.com/canozyigiit/CarRentalProject-Backend/blob/master/readme/nugetPackage.png)
 ![nugetPackage2](https://github.com/canozyigiit/CarRentalProject-Backend/blob/master/readme/nugetPackage1.png)
 
+## Project Layers
+![projectLayers](https://github.com/canozyigiit/CarRentalProject-Backend/blob/master/readme/projectLayers.PNG)
+
 ## Frontend
 [CarRentalProject-Angular](https://github.com/canozyigiit/CarRentalProject-Angular)
 ## License
