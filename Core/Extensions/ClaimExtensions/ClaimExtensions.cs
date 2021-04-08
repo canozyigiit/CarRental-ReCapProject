@@ -5,7 +5,7 @@ using System.Linq;
 using System.Security.Claims;
 using System.Text;
 
-namespace Core.Extensions
+namespace Core.Extensions.ClaimExtensions
 {
     public static class ClaimExtensions
     {
