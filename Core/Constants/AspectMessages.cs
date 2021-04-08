@@ -15,8 +15,8 @@
         public static string PasswordError = "Password yanlış";
         public static string SuccessfulLogin = "Sisteme giriş başarılı.";
         public static string UserAlreadyExists = "Bu kullanıcı zaten mevcut.";
-        public static string UserRegistered = "Kullanıcı başarıyla kaydoldu.";
-        public static string AccessTokenCreated = "Giriş Yapıldı.";
+        public static string UserRegistered = "Kayıt işlemi tamamlandı.";
+        public static string AccessTokenCreated = "Token oluşturuldu.";
         public static string BrandLimitExceded = "Marka araç limiti dolu";
         public static string DescriptionAlreadyExists = "Aynı açıklamada zaten bir araç var";
         public static string UserCreditCardAddSuccess = "Kredi kartı başarıyla kaydedildi.";

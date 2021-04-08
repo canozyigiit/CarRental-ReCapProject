@@ -54,7 +54,7 @@ namespace Business.Concrete
 
         public IResult RentalCarControl(int carId)
         {
-            var result = _rentalDal.GetAll(r => r.CarId == carId && r.ReturnDate != DateTime.Now.Date).Any();//to be corrected
+            var result = _rentalDal.GetAll(r => r.CarId == carId && r.ReturnDate != null).Any();//to be corrected
             if (result)
             {
                 return new ErrorResult(AspectMessages.RentalNotDelivered);

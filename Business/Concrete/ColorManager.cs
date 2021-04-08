@@ -54,12 +54,9 @@ namespace Business.Concrete
         [CacheRemoveAspect("IColorService.Get")]
         public IResult Delete(Color color)
         {
-            var result = _colorDal.DeleteColorIfNotReturnDateNull(color);
-            if (result)
-            {
-                return new SuccessResult(Messages.Deleted);
-            }
-            return new ErrorResult(Messages.NotDeleted);
+             _colorDal.Delete(color);
+           
+            return new SuccessResult(Messages.Deleted);
 ;        }
     }
 }

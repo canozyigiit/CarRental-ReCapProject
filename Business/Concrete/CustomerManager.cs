@@ -72,5 +72,26 @@ namespace Business.Concrete
         {
             return new SuccessDataResult<List<CustomerDetailDto>>(_customerDal.GetCustomerDetails(u => u.UserId == userId));
         }
+        public IDataResult<Customer> GetCustomerByUserId(int userId)
+        {
+            return new SuccessDataResult<Customer>(_customerDal.GetCustomerByUserId(u => u.UserId == userId));
+        }
+        public IResult EditCustomer(CustomerUpdateDto customer)
+        {
+            
+
+            var customerInfo = new Customer()
+            {
+                CustomerId = customer.CustomerId,
+                CompanyName = customer.CompanyName,
+                FindexScore = customer.FindexScore,
+                UserId = customer.UserId
+              
+               
+            };
+
+            _customerDal.Update(customerInfo);
+            return new SuccessResult(Messages.Updated);
+        }
     }
 }

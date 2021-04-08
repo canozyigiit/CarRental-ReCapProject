@@ -41,11 +41,7 @@ namespace DataAccess.Concrete.InMemory
             return _brands.Where(filter).ToList();
         }
 
-        public List<CarBrandDetailDto> GetCarAndBrandDetails()
-        {
-            throw new NotImplementedException();
-        }
-
+       
         public bool DeleteBrandIfNotReturnDateNull(Brand brand)
         {
             throw new NotImplementedException();

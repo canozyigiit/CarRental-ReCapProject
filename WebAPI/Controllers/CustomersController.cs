@@ -16,12 +16,12 @@ namespace WebAPI.Controllers
     public class CustomersController : ControllerBase
     {
         ICustomerService _customerService;
-        IRentalService _rentalService;
+       
 
-        public CustomersController(ICustomerService customerService, IRentalService rentalService)
+        public CustomersController(ICustomerService customerService)
         {
             _customerService = customerService;
-            _rentalService = rentalService;
+          
         }
 
         [HttpGet("getall")]
@@ -94,6 +94,26 @@ namespace WebAPI.Controllers
         public IActionResult GetCustomerDetailByUserId(int userId)
         {
             var result = _customerService.GetCustomerDetailByUserId(userId);
+            if (result.SuccessStatus)
+            {
+                return Ok(result);
+            }
+            return BadRequest(result);
+        }
+        [HttpGet("getcustomerbyuserid")]
+        public IActionResult GetCustomerByUserId(int userId)
+        {
+            var result = _customerService.GetCustomerByUserId(userId);
+            if (result.SuccessStatus)
+            {
+                return Ok(result);
+            }
+            return BadRequest(result);
+        }
+        [HttpPost("edit")]
+        public IActionResult EditCustomer(CustomerUpdateDto customer)
+        {
+            var result = _customerService.EditCustomer(customer);
             if (result.SuccessStatus)
             {
                 return Ok(result);

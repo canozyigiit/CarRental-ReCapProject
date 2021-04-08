@@ -53,6 +53,24 @@ namespace DataAccess.Concrete.EntityFramework
                 }
             }
 
+            public Customer GetCustomerByUserId(Expression<Func<Customer, bool>> filter = null)
+            {
+            using (RentACarContext context = new RentACarContext())
+            {
+                var result = from customer in filter is null ? context.Customers : context.Customers.Where(filter)
+
+                    join user in context.Users on customer.UserId equals user.Id
+                    select new Customer()
+                    {
+                        UserId = user.Id,
+                        CustomerId = customer.CustomerId,
+                        CompanyName = customer.CompanyName,
+                        FindexScore = customer.FindexScore
+                    };
+                return context.Set<Customer>().FirstOrDefault(filter);
+            }
+        }
+
             public bool DeleteCustomerIfNotReturnDateNull(Customer customer)
         {
             using (RentACarContext context = new RentACarContext())

@@ -12,6 +12,7 @@ namespace DataAccess.Abstract
     {
         List<CustomerRentalDetailDto> GetRentalAndCustomerDetails();
         List<CustomerDetailDto> GetCustomerDetails(Expression<Func<Customer, bool>> filter = null);
+        Customer GetCustomerByUserId(Expression<Func<Customer, bool>> filter = null);
         bool DeleteCustomerIfNotReturnDateNull(Customer customer);
     }
 }

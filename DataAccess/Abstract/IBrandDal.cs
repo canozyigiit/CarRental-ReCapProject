@@ -9,7 +9,7 @@ namespace DataAccess.Abstract
 {
     public interface IBrandDal : IEntityRepository<Brand>
     {
-        List<CarBrandDetailDto> GetCarAndBrandDetails();
-        bool DeleteBrandIfNotReturnDateNull(Brand brand);
+      
+      
     }
 }

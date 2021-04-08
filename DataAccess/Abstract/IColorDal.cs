@@ -9,7 +9,7 @@ namespace DataAccess.Abstract
 {
     public interface IColorDal : IEntityRepository<Color>
     {
-        List<CarColorDetailDto> GetCarColorDetails();
-        bool DeleteColorIfNotReturnDateNull(Color color);
+      
+      
     }
 }

@@ -51,10 +51,7 @@ namespace DataAccess.Concrete.InMemory
             colorToUpdate.ColorName = entity.ColorName;
         }
 
-        public List<CarColorDetailDto> GetCarColorDetails()
-        {
-            throw new NotImplementedException();
-        }
+       
 
         public bool DeleteColorIfNotReturnDateNull(Color color)
         {

@@ -56,12 +56,10 @@ namespace Business.Concrete
         [CacheRemoveAspect("IBrandService.Get")]
         public IResult Delete(Brand brand)
         {
-            var result = _brandDal.DeleteBrandIfNotReturnDateNull(brand);
-            if (result)
-            {
+             _brandDal.Delete(brand);
+           
                 return new SuccessResult(Messages.Deleted);
-            }
-            return new ErrorResult(Messages.NotDeleted);
+           
         }
 
     }
