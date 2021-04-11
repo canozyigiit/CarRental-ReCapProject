@@ -1,5 +1,5 @@
 ## CarRentalProject - Backend
-Integrated Development Environment : Visual Studio 2019
+Integrated Development Environment : Visual Studio 2019 <img align="left" alt="Visual Studio" width="26px" src="https://www.dusuncesiz.net/wp-content/uploads/2013/11/Visual_Studio_2012.png" />
 
 
 ## Built With
