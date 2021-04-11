@@ -6,6 +6,7 @@ using Core.Constants;
 using Core.Utilities.Results;
 using DataAccess.Abstract;
 using Entities.Concrete;
+using Messages = Business.Constans.Messages;
 
 namespace Business.Concrete
 {
@@ -22,7 +23,7 @@ namespace Business.Concrete
         {
 
             _userCreditCardDal.Add(card);
-            return new SuccessResult(AspectMessages.UserCreditCardAddSuccess);
+            return new SuccessResult(Messages.UserCreditCardAddSuccess);
         }
 
         
@@ -34,7 +35,7 @@ namespace Business.Concrete
 
         public IDataResult<List<UserCreditCard>> GetAll(int userId)
         {
-            return new SuccessDataResult<List<UserCreditCard>>(_userCreditCardDal.GetAll(x => x.UserId == userId), AspectMessages.CustomerCreditCardsListed);
+            return new SuccessDataResult<List<UserCreditCard>>(_userCreditCardDal.GetAll(x => x.UserId == userId), Messages.CustomerCreditCardsListed);
 
            
         }

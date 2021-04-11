@@ -7,6 +7,7 @@ using Core.Constants;
 using Core.Utilities.Results;
 using DataAccess.Abstract;
 using Entities.Concrete;
+using Messages = Business.Constans.Messages;
 
 namespace Business.Concrete
 {
@@ -29,9 +30,9 @@ namespace Business.Concrete
             int customerFindexScore = _customerService.GetById(customerId).Data.FindexScore;
             if (carFindexScore > customerFindexScore)
             {
-                return new ErrorResult(AspectMessages.FindexScoreError);
+                return new ErrorResult(Messages.FindexScoreError);
             }
-            return new SuccessResult(AspectMessages.FindexScoreSuccess);
+            return new SuccessResult(Messages.FindexScoreSuccess);
         }
     }
 }

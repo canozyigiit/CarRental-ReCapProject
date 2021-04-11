@@ -7,6 +7,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Core.Constants;
 using Core.Extensions;
 using Core.Extensions.ClaimExtensions;
+using Messages = Business.Constans.Messages;
 
 namespace Business.BusinessAspects.Autofac
 {
@@ -33,7 +34,7 @@ namespace Business.BusinessAspects.Autofac
                     return; 
                 }
             }
-            throw new Exception(AspectMessages.AuthorizationDenied); 
+            throw new Exception(Messages.AuthorizationDenied); 
         }
     }
 }

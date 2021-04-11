@@ -6,6 +6,7 @@ using Core.Constants;
 using Core.Utilities.Results;
 using DataAccess.Abstract;
 using Entities.Concrete;
+using Messages = Business.Constans.Messages;
 
 namespace Business.Concrete
 {
@@ -18,7 +19,7 @@ namespace Business.Concrete
 
         public IResult Payment(UserCreditCard card)
         { 
-            return new SuccessResult(AspectMessages.PaymentSuccess);
+            return new SuccessResult(Messages.PaymentSuccess);
         }
     }
 }

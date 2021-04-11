@@ -115,7 +115,7 @@ namespace Business.Concrete
             var result = _carDal.GetAll(c => c.Description == description).Any();
             if (result)
             {
-                return new ErrorResult(AspectMessages.DescriptionAlreadyExists);
+                return new ErrorResult(Constans.Messages.DescriptionAlreadyExists);
             }
             return new SuccessResult();
         }
@@ -124,7 +124,7 @@ namespace Business.Concrete
             var result = _brandService.GetAll();
             if ( result.Data.Count> 5)
             {
-                return new ErrorResult(AspectMessages.BrandLimitExceded);
+                return new ErrorResult(Constans.Messages.BrandLimitExceded);
             }
 
             return new SuccessResult();

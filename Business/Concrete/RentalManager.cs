@@ -14,6 +14,7 @@ using Core.Aspects.Autofac.Caching;
 using Core.Aspects.Autofac.Performance;
 using Business.BusinessAspects.Autofac;
 using Core.Utilities.Business;
+using Messages = Business.Constans.Messages;
 
 namespace Business.Concrete
 {
@@ -28,17 +29,17 @@ namespace Business.Concrete
 
         public IDataResult<List<Rental>> GetAll()
         {
-            return new SuccessDataResult<List<Rental>>(_rentalDal.GetAll(), AspectMessages.RentalListed);
+            return new SuccessDataResult<List<Rental>>(_rentalDal.GetAll(), Messages.RentalListed);
         }
 
         public IDataResult<List<RentalDetailDto>> GetDetailsAll()
         {
-            return new SuccessDataResult<List<RentalDetailDto>>(_rentalDal.GetRentalDetails(), AspectMessages.RentalListed);
+            return new SuccessDataResult<List<RentalDetailDto>>(_rentalDal.GetRentalDetails(), Messages.RentalListed);
         }
 
         public IDataResult<Rental> GetById(int Id)
         {
-            return new SuccessDataResult<Rental>(_rentalDal.Get(r => r.RentalId == Id), AspectMessages.RentalListed);
+            return new SuccessDataResult<Rental>(_rentalDal.Get(r => r.RentalId == Id), Messages.RentalListed);
         }
 
         public IResult Add(Rental rental)
@@ -46,34 +47,44 @@ namespace Business.Concrete
             var result = RentalCarControl(rental.CarId);
             if (!result.SuccessStatus)
             {
-                return new ErrorResult(AspectMessages.RentalNotDelivered);
+                return new ErrorResult(Messages.RentalNotDelivered);
             }
             _rentalDal.Add(rental);
-            return new SuccessResult(AspectMessages.RentalAdded);
+            return new SuccessResult(Messages.RentalAdded);
         }
 
         public IResult RentalCarControl(int carId)
         {
-            var result = _rentalDal.GetAll(r => r.CarId == carId && r.ReturnDate != null).Any();//to be corrected
-            if (result)
-            {
-                return new ErrorResult(AspectMessages.RentalNotDelivered);
-            }
+            var result = _rentalDal.GetAll(r => r.CarId == carId && r.ReturnDate != null);//to be corrected
+            if (result.Count > 0) return new ErrorResult(Messages.RentalNotDelivered);
 
-            return new SuccessResult(AspectMessages.RentalSuccess);
+            return new SuccessResult(Messages.RentalSuccess);
         }
 
+        [ValidationAspect(typeof(RentalValidator))]
+        public IResult IsRentable(Rental rental)
+        {
+            var result = _rentalDal.GetAll(r => r.CarId == rental.CarId);
+
+            if (result.Any(r =>
+                r.ReturnDate >= rental.RentDate &&
+                r.ReturnDate <= rental.ReturnDate
+            )) return new ErrorResult(Messages.RentalNotDelivered);
+
+            return new SuccessResult();
+        }
+     
 
         public IResult Update(Rental rental)
         {
             _rentalDal.Update(rental);
-            return new SuccessResult(AspectMessages.RentalUpdated);
+            return new SuccessResult(Messages.RentalUpdated);
         }
 
         public IResult Delete(Rental rental)
         {
             _rentalDal.Delete(rental);
-            return new SuccessResult(AspectMessages.RentalDeleted);
+            return new SuccessResult(Messages.RentalDeleted);
         }
     }
 }

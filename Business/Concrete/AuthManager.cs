@@ -8,6 +8,7 @@ using Entities.DTOs.AuthDTOs;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using Messages = Business.Constans.Messages;
 
 namespace Business.Concrete
 {
@@ -39,7 +40,7 @@ namespace Business.Concrete
             };
 
             _userService.Add(user);
-            return new SuccessDataResult<User>(user, AspectMessages.UserRegistered);
+            return new SuccessDataResult<User>(user, Messages.UserRegistered);
 
         }
 
@@ -48,14 +49,14 @@ namespace Business.Concrete
             var userToCheck = _userService.GetByEmail(userForLoginDto.Email);
             if (userToCheck.Data == null)
             {
-                return new ErrorDataResult<User>(AspectMessages.UserNotFound);
+                return new ErrorDataResult<User>(Messages.UserNotFound);
             }
 
             if (!HashingHelper.VerifyPasswordHash(userForLoginDto.Password, userToCheck.Data.PasswordHash, userToCheck.Data.PasswordSalt))
             {
-                return new ErrorDataResult<User>(AspectMessages.PasswordError);
+                return new ErrorDataResult<User>(Messages.PasswordError);
             }
-            return new SuccessDataResult<User>(userToCheck.Data, AspectMessages.SuccessfulLogin);
+            return new SuccessDataResult<User>(userToCheck.Data, Messages.SuccessfulLogin);
         }
 
         public IResult UserExists(string email)
@@ -65,7 +66,7 @@ namespace Business.Concrete
             {
                 return new SuccessResult();
             }
-            return new ErrorResult(AspectMessages.UserAlreadyExists);
+            return new ErrorResult(Messages.UserAlreadyExists);
 
         }
 

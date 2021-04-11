@@ -61,11 +61,17 @@ namespace Business.Concrete
             return new SuccessResult(Messages.Updated);
         }
 
-        [CacheAspect]
+        //[CacheAspect]
         public IDataResult<List<OperationClaim>> GetClaims(User user)
         {
             return new SuccessDataResult<List<OperationClaim>>(_userDal.GetClaims(user));
         }
+
+        public IDataResult<List<OperationClaim>> GetClaimsByUserId(int userId)
+        {
+            return new SuccessDataResult<List<OperationClaim>>(_userDal.GetClaimsByUserId());
+        }
+
         public IResult EditProfile(UserUpdateDto user)
         {
             byte[] passwordHash;

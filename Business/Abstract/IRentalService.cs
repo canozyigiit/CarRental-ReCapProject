@@ -18,6 +18,7 @@ namespace Business.Abstract
         IResult Add(Rental rental);
 
         IResult RentalCarControl(int CarId);
+        IResult IsRentable(Rental rental);
 
         IResult Update(Rental rental);
 
