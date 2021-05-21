@@ -12,9 +12,10 @@ Integrated Development Environment : Visual Studio 2019 <img align="left" alt="V
 [![Fluent-Validation](https://img.shields.io/badge/Fluent%20Validation-004880?style=for-the-badge&logo=nuget&logoColor=white)](https://fluentvalidation.net/)
 
 ## Project Layers
-![projectLayers](https://github.com/canozyigiit/CarRentalProject-Backend/blob/master/readme/projectLayers.PNG) ![datebaseTables](https://github.com/canozyigiit/CarRentalProject-Backend/blob/master/readme/databaseTables.PNG) 
+![projectLayers](https://github.com/canozyigiit/CarRentalProject-Backend/blob/master/readme/projectLayers.PNG) 
 
 ## Database Diagram
+![datebaseDiagram](https://github.com/canozyigiit/CarRentalProject-Backend/blob/master/CarRentalDB.png)
 ## Frontend
 [CarRentalProject-Angular](https://github.com/canozyigiit/CarRentalProject-Angular)
 ## License
